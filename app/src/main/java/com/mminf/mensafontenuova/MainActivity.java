@@ -1,8 +1,6 @@
-package com.mminf.myapplicationeeeee;
+package com.mminf.mensafontenuova;
 
-import android.icu.util.Calendar;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -22,14 +20,10 @@ import android.webkit.WebViewClient;
 import android.widget.TextView;
 
 
-
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import static com.mminf.myapplicationeeeee.R.id.dolce;
-import static com.mminf.myapplicationeeeee.R.id.expanded_menu;
 import static java.time.LocalDate.now;
 
 public class MainActivity extends AppCompatActivity {
@@ -111,6 +105,11 @@ mViewPager.setCurrentItem(Integer.parseInt(date.toString())-1);
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+
+            Intent intent1 = new Intent(this,  Main2Activity.class);
+            startActivity(intent1);
+
+
             return true;
         }
 
