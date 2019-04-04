@@ -1,47 +1,145 @@
 package com.mminf.mensafontenuova;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.webkit.ValueCallback;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
-
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import static java.time.LocalDate.now;
-
 public class MainActivity extends AppCompatActivity {
 
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
+    private ViewPager mViewPager;
+
+    public void scrivi_str(String campo, String valore) {
+        SharedPreferences mPreferences_agg = PreferenceManager.getDefaultSharedPreferences(this);
+        mPreferences_agg.edit().putString(campo, valore).commit();
+    }
+
+    public void riempidati() {
+        WebView myWebView = findViewById(R.id.WEB);
+        WebSettings webSettings = myWebView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        myWebView.getSettings().setDomStorageEnabled(true);
+        myWebView.setOverScrollMode(WebView.OVER_SCROLL_NEVER);
+
+        String username_sito = leggi_str("username");
+        String password_sito = leggi_str("password");
+
+
+        String url = "https://www.schoolesuite.it/default1/NSC_Login.aspx?installation_code=fontenuopre";
+        final String js = "javascript: document.getElementById('txtUsername').value='" + username_sito + "';" + "document.getElementById('txtPassword').value='" + password_sito + "';" + "document.getElementById('btnOK').click()";
+        myWebView.loadUrl(url);
+        myWebView.setWebViewClient(new WebViewClient() {
+            public void onPageFinished(WebView view, String url) {
+
+                if (url.contains("fontenuopre")) {
+                    view.evaluateJavascript(js, new ValueCallback<String>() {
+                        @Override
+                        public void onReceiveValue(String s) {
+                            Log.e("html", s);
+                        }
+                    });
+                }
+
+                int conta;
+                if (url.contains("login")) {
+                    TextView bambino = findViewById(R.id.textView2);
+                    bambino.setText("errore login");
+                }
+                if (url.contains("PWM_ChildrenList.aspx")) {
+                    view.evaluateJavascript("(function() { return (document.getElementById('tblChildrenList').rows[1].cells.item(0).innerHTML); })();", new ValueCallback<String>() {
+                        @Override
+//
+                        public void onReceiveValue(String html1) {
+                            String input = html1;
+                            String input2 = html1;
+                            Log.e("dove", "demtro onreceive");
+                            TextView saldo = findViewById(R.id.textView4);
+                            Log.e("dove", "dopo saldo");
+
+                            input = input.substring(html1.indexOf(">") + 1, html1.lastIndexOf("\\"));
+                            Log.e("dove", "dopo sub");
+                            input = "Bambino: " + input;
+                            TextView bambino = findViewById(R.id.textView2);
+                            bambino.setText(input);
+                            //                           	saldo.setText(input2.toString());
+                            Log.e("input", input);
+                            Log.e("input2", input2);
+                        }
+                    });
+                    //********************************************************************************
+                    //*******************************************saldo****************************
+                    view.evaluateJavascript(
+                            "(function() { return (document.getElementById('tblChildrenList').rows[1].cells.item(1).innerHTML); })();", new ValueCallback<String>() {
+                                @Override
+                                public void onReceiveValue(String html1) {
+                                    Log.e("html0", html1);
+                                    String input = html1;
+                                    String input2 = html1;
+                                    TextView saldo = findViewById(R.id.textView4);
+                                    input = input.substring(html1.indexOf(">") + 1, html1.lastIndexOf("\\"));
+                                    input = "Saldo: " + input;
+                                    TextView bambino = findViewById(R.id.textView2);
+                                    saldo.setText(input);
+                                    Log.e("input", input);
+                                    Log.e("input2", input2);
+                                }
+                            });
+
+
+                }
+
+            }
+
+        });
+
+
+    }
+
+    void scrivi_int(String campo, int valore) {
+        SharedPreferences mPreferences3 = PreferenceManager.getDefaultSharedPreferences(this);
+        mPreferences3.edit().putInt(campo, valore).commit();
+    }
+
+    public String leggi_str(String campo) {
+        SharedPreferences mPreferences_leg = PreferenceManager.getDefaultSharedPreferences(this);
+        String valore = "";
+        return mPreferences_leg.getString(campo, valore);
+    }
+
+    public String leggi_sito(String campo, String valore) {
+        SharedPreferences mPreferences_leg = PreferenceManager.getDefaultSharedPreferences(this);
+        return mPreferences_leg.getString(campo, valore);
+    }
+
+
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
-    private ViewPager mViewPager;
+    public int leggi_int(String campo) {
+        SharedPreferences mPreferences_leg = PreferenceManager.getDefaultSharedPreferences(this);
+        int valore = 0;
+        return mPreferences_leg.getInt(campo, valore);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
         myWebView.getSettings().setDomStorageEnabled(true);
 
 
-        myWebView.loadUrl("https://www.icsandropertinifontenuova.edu.it");
+        myWebView.loadUrl(leggi_sito("sito", "https://www.webpagetest.org"));
         myWebView.setWebViewClient(new WebViewClient() {
             @SuppressWarnings("deprecation")
             @Override
@@ -66,14 +164,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager = findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
 
@@ -81,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
         String date = new SimpleDateFormat("dd", Locale.getDefault()).format(new Date());
 
 
-mViewPager.setCurrentItem(Integer.parseInt(date.toString())-1);
+        mViewPager.setCurrentItem(Integer.parseInt(date) - 1);
 
 
 
@@ -155,20 +253,16 @@ mViewPager.setCurrentItem(Integer.parseInt(date.toString())-1);
                     "28/04/2019;DOMENICA; ; ; ; ;","29/04/2019;LUNEDI;Pasta al burro;Scaloppine tacchino;pomodori/finocchi;Frutta di stagione","30/04/2019;MARTEDI;Pasta pomodoro e basilico;Filetti di platessa mugnaia;Patate lesse/forno;Frutta di stagione"};
 
 
+            TextView cibo_data = rootView.findViewById(R.id.data);
 
 
-
-            TextView cibo_data = (TextView)  rootView.findViewById(R.id.data);
-
-
-
-            TextView cibo_primo = (TextView)  rootView.findViewById(R.id.primo);
-            TextView cibo_secondo = (TextView) rootView.findViewById(R.id.secondo);
+            TextView cibo_primo = rootView.findViewById(R.id.primo);
+            TextView cibo_secondo = rootView.findViewById(R.id.secondo);
 
 
-            TextView cibo_contorno = (TextView)  rootView.findViewById(R.id.contorno);
+            TextView cibo_contorno = rootView.findViewById(R.id.contorno);
 
-            TextView cibo_dolce = (TextView)  rootView.findViewById(R.id.dolce);
+            TextView cibo_dolce = rootView.findViewById(R.id.dolce);
 
 
 

@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -16,6 +14,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 public class Main2Activity extends AppCompatActivity {
@@ -26,10 +25,7 @@ public class Main2Activity extends AppCompatActivity {
     }
 
 
-    void scrivi_int(String campo, int valore) {
-        SharedPreferences mPreferences3 = PreferenceManager.getDefaultSharedPreferences(this);
-        mPreferences.edit().putInt(campo, valore).commit();
-    }
+    private boolean connessioneok = false;
 
     public String leggi_str(String campo) {
         SharedPreferences mPreferences_leg = PreferenceManager.getDefaultSharedPreferences(this);
@@ -48,6 +44,10 @@ public class Main2Activity extends AppCompatActivity {
     private String password;
     int contatore;
 
+    void scrivi_int(String campo, int valore) {
+        SharedPreferences mPreferences3 = PreferenceManager.getDefaultSharedPreferences(this);
+        mPreferences3.edit().putInt(campo, valore).commit();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,45 +55,40 @@ public class Main2Activity extends AppCompatActivity {
         setContentView(R.layout.activity_main2);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        EditText n_user =  findViewById(R.id.editText);
+        EditText n_user = findViewById(R.id.editText);
         EditText n_password = findViewById(R.id.editText2);
+        RadioButton rad1 = findViewById(R.id.radioButton);
+        RadioButton rad2 = findViewById(R.id.radioButton2);
 
-        SharedPreferences mPreferences =  PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         /* WebView myWebView =  findViewById(R.id.WEB);*/
+
+        if (leggi_str("radio1") == "0") {
+            rad1.setChecked(true);
+            rad2.setChecked(false);
+        }
+
+        if (leggi_str("radio1") == "1") {
+            rad1.setChecked(true);
+            rad2.setChecked(false);
+        }
+        if (leggi_str("radio1") == "2") {
+            rad1.setChecked(false);
+            rad2.setChecked(true);
+        }
+
+
         username = leggi_str("username");
         password = leggi_str("password");
         n_user.setText(username);
         n_password.setText(password);
-        Log.e("user",username);
-        Log.e("pass",password);
-
-
-        contatore = 3;
-
-
-
 
     }
 
-    public void premuto(View view) {
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-
-        TextView output = findViewById(R.id.textView3);
-        output.setText("Risultato connessione : test in corso...");
-        SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        EditText n_user = findViewById(R.id.editText);
-        EditText n_password = findViewById(R.id.editText2);
+    public void connesso(String username_site, String password_site) {
 
 
-        SharedPreferences.Editor preferencesEditor = mPreferences.edit();
-        scrivi_str("username", n_user.getText().toString());
-        scrivi_str("password", n_password.getText().toString());
-//    	mPreferences.edit().putString("username",n_user.getText().toString()).commit();
-//    	mPreferences.edit().putString("password",n_password.getText().toString()).commit();
-//    	mPreferences.edit().putInt("conta",3).commit();
         WebView myWebView = findViewById(R.id.WEB);
         WebSettings webSettings = myWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
@@ -101,11 +96,11 @@ public class Main2Activity extends AppCompatActivity {
         myWebView.setOverScrollMode(WebView.OVER_SCROLL_NEVER);
 
         String url = "https://www.schoolesuite.it/default1/NSC_Login.aspx?installation_code=fontenuopre";
-        final String js = "javascript: document.getElementById('txtUsername').value='" + n_user.getText().toString() + "';" + "document.getElementById('txtPassword').value='" + n_password.getText().toString() + "';" + "document.getElementById('btnOK').click()";
+        final String js = "javascript: document.getElementById('txtUsername').value='" + username_site + "';" + "document.getElementById('txtPassword').value='" + password_site + "';" + "document.getElementById('btnOK').click()";
         myWebView.loadUrl(url);
+
         myWebView.setWebViewClient(new WebViewClient() {
             public void onPageFinished(WebView view, String url) {
-
                 if (url.contains("fontenuopre")) {
                     view.evaluateJavascript(js, new ValueCallback<String>() {
                         @Override
@@ -114,76 +109,62 @@ public class Main2Activity extends AppCompatActivity {
                         }
                     });
                 }
-                TextView output = findViewById(R.id.textView3);
-                TextView output2 = findViewById(R.id.textView5);
-
-
-                int conta;
                 if (url.contains("login")) {
-                    output.setText("Risultato connessione : ERRORE");
-                    TextView output4 = findViewById(R.id.textView);
-                    conta = Integer.valueOf(output4.getText().toString());
-                    Log.e("SIAMO", "  	conta = Integer.valueOf(output4.getText().toString());");
-                    conta = conta - 1;
-                    output4.setText(Integer.toString(conta));
-                    if (conta > 0) {
-                        output2.setText("ATTENZIONE ANCORA " + conta + " al blocco utenza");
-                    }
-                    if (conta <= 0) {
-                        output2.setText("UTENZA BLOCCATA COLLEGARSI AL SITO PER SBLOCCARLA");
-                    }
+
+                    connessioneok = false;
+                    scrivi_str("connesso", "NO");
+
                 }
                 if (url.contains("PWM_ChildrenList.aspx")) {
-                    output2.setText("");
-
-
-                    output.setText("Risultato connessione : effettuata correttamente");
-                    Log.e("dove","dopo connessione effettuata")
-                    view.evaluateJavascript("(function() { return (document.getElementById('tblChildrenList').rows[1].cells.item(0).innerHTML); })();", new ValueCallback<String>() {
-                          @Override
-//
-                           public void onReceiveValue(String html1) {
-                             String input = html1;
-                             String input2 = html1;
-                              Log.e("dove","demtro onreceive");
-                             TextView saldo = findViewById(R.id.textView4);
-                              Log.e("dove","dopo saldo");
-
-                              input = input.substring(html1.indexOf(">") + 1, html1.lastIndexOf("\\"));
-                              Log.e("dove","dopo sub");
-                             input = "Bambino: " + input.toString();
-                             TextView bambino = findViewById(R.id.textView2);
-                             bambino.setText(input.toString());
-                            //                           	saldo.setText(input2.toString());
-                            Log.e("input", input);
-                            Log.e("input2", input2);
-                        }
-                    });
-                    //********************************************************************************
-                    //*******************************************saldo****************************
-                    view.evaluateJavascript(
-                            "(function() { return (document.getElementById('tblChildrenList').rows[1].cells.item(1).innerHTML); })();", new ValueCallback<String>() {
-                                @Override
-                                public void onReceiveValue(String html1) {
-                                    Log.e("html0", html1);
-                                    String input = html1;
-                                    String input2 = html1;
-                                    TextView saldo = findViewById(R.id.textView4);
-                                    input = input.substring(html1.indexOf(">") + 1, html1.lastIndexOf("\\"));
-                                    input = "Saldo: " + input.toString();
-                                    TextView bambino = findViewById(R.id.textView2);
-                                    saldo.setText(input.toString());
-                                    Log.e("input", input);
-                                    Log.e("input2", input2);
-                                }
-                            });
-
+                    connessioneok = true;
+                    scrivi_str("connesso", "ok");
 
                 }
 
             }
-
         });
     }
-}
 
+
+    public void premuto(View view) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        EditText n_user = findViewById(R.id.editText);
+        EditText n_password = findViewById(R.id.editText2);
+        TextView txtconnesso = findViewById(R.id.textView10);
+        RadioButton rad1 = findViewById(R.id.radioButton);
+        RadioButton rad2 = findViewById(R.id.radioButton2);
+        SharedPreferences.Editor preferencesEditor = mPreferences.edit();
+        scrivi_str("username", n_user.getText().toString());
+        scrivi_str("password", n_password.getText().toString());
+        scrivi_str("utenza", "SI");
+
+        if (rad1.isChecked()) {
+            scrivi_str("radio1", "1");
+        }
+
+        if (rad2.isChecked()) {
+            scrivi_str("radio1", "2");
+        }
+
+        connesso(n_user.getText().toString(), n_password.getText().toString());
+        txtconnesso.setText(leggi_str("connesso"));
+
+
+    }
+
+
+    public void sito1(View view) {
+        scrivi_str("sito", "https://www.icsandropertinifontenuova.edu.it");
+    }
+
+
+    public void sito2(View view) {
+
+        scrivi_str("sito", "http://www.istitutopirandello.it/public/");
+
+    }
+
+
+}
