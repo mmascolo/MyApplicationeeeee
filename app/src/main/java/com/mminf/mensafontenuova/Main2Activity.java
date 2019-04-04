@@ -2,6 +2,7 @@ package com.mminf.mensafontenuova;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -86,10 +87,10 @@ public class Main2Activity extends AppCompatActivity {
 
     }
 
-    public void connesso(String username_site, String password_site) {
+    public synchronized void connesso(String username_site, String password_site) {
 
 
-        WebView myWebView = findViewById(R.id.WEB);
+        WebView myWebView = findViewById(R.id.WEB2);
         WebSettings webSettings = myWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         myWebView.getSettings().setDomStorageEnabled(true);
@@ -101,6 +102,8 @@ public class Main2Activity extends AppCompatActivity {
 
         myWebView.setWebViewClient(new WebViewClient() {
             public void onPageFinished(WebView view, String url) {
+
+                Log.e("html", url);
                 if (url.contains("fontenuopre")) {
                     view.evaluateJavascript(js, new ValueCallback<String>() {
                         @Override
@@ -113,11 +116,16 @@ public class Main2Activity extends AppCompatActivity {
 
                     connessioneok = false;
                     scrivi_str("connesso", "NO");
+                    TextView txtconnesso = findViewById(R.id.textView10);
+                    txtconnesso.setText("Credenziali: " + leggi_str("connesso"));
 
                 }
                 if (url.contains("PWM_ChildrenList.aspx")) {
                     connessioneok = true;
                     scrivi_str("connesso", "ok");
+                    TextView txtconnesso = findViewById(R.id.textView10);
+                    txtconnesso.setText("Credenziali: " + leggi_str("connesso"));
+                    Log.e("html", leggi_str("connesso").toString());
 
                 }
 
@@ -127,12 +135,14 @@ public class Main2Activity extends AppCompatActivity {
 
 
     public void premuto(View view) {
+        scrivi_str("connesso", "Test connessione in corso");
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         EditText n_user = findViewById(R.id.editText);
         EditText n_password = findViewById(R.id.editText2);
         TextView txtconnesso = findViewById(R.id.textView10);
+        txtconnesso.setText("Credenziali: " + leggi_str("connesso"));
         RadioButton rad1 = findViewById(R.id.radioButton);
         RadioButton rad2 = findViewById(R.id.radioButton2);
         SharedPreferences.Editor preferencesEditor = mPreferences.edit();
@@ -148,8 +158,9 @@ public class Main2Activity extends AppCompatActivity {
             scrivi_str("radio1", "2");
         }
 
-        connesso(n_user.getText().toString(), n_password.getText().toString());
-        txtconnesso.setText(leggi_str("connesso"));
+   connesso(n_user.getText().toString(), n_password.getText().toString());
+        Log.e("prima", leggi_str("connesso"));
+        txtconnesso.setText("Credenziali: " + leggi_str("connesso"));
 
 
     }
@@ -165,6 +176,7 @@ public class Main2Activity extends AppCompatActivity {
         scrivi_str("sito", "http://www.istitutopirandello.it/public/");
 
     }
+
 
 
 }

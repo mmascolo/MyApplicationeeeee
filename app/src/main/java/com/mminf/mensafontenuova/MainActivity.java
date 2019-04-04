@@ -74,13 +74,13 @@ public class MainActivity extends AppCompatActivity {
                             String input = html1;
                             String input2 = html1;
                             Log.e("dove", "demtro onreceive");
-                            TextView saldo = findViewById(R.id.textView4);
+                            TextView saldo = findViewById(R.id.textView2);
                             Log.e("dove", "dopo saldo");
 
                             input = input.substring(html1.indexOf(">") + 1, html1.lastIndexOf("\\"));
                             Log.e("dove", "dopo sub");
                             input = "Bambino: " + input;
-                            TextView bambino = findViewById(R.id.textView2);
+                            TextView bambino = findViewById(R.id.textView4);
                             bambino.setText(input);
                             //                           	saldo.setText(input2.toString());
                             Log.e("input", input);
@@ -96,10 +96,10 @@ public class MainActivity extends AppCompatActivity {
                                     Log.e("html0", html1);
                                     String input = html1;
                                     String input2 = html1;
-                                    TextView saldo = findViewById(R.id.textView4);
+                                    TextView saldo = findViewById(R.id.textView2);
                                     input = input.substring(html1.indexOf(">") + 1, html1.lastIndexOf("\\"));
                                     input = "Saldo: " + input;
-                                    TextView bambino = findViewById(R.id.textView2);
+                                    TextView bambino = findViewById(R.id.textView4);
                                     saldo.setText(input);
                                     Log.e("input", input);
                                     Log.e("input2", input2);
@@ -153,7 +153,18 @@ public class MainActivity extends AppCompatActivity {
         myWebView.getSettings().setDomStorageEnabled(true);
 
 
-        myWebView.loadUrl(leggi_sito("sito", "https://www.webpagetest.org"));
+        if (leggi_str("connesso").equals("ok")) {
+            riempidati();
+        }
+        if (leggi_str("connesso").equals("NO")) {
+            TextView bambino = findViewById(R.id.textView2);
+            TextView bambino2 = findViewById(R.id.textView4);
+bambino2.setText("Per visualizzare il saldo attuale");
+            bambino.setText("Impostare le credenziali nei settings");
+        }
+
+
+        myWebView.loadUrl(leggi_sito("sito", "https://www.icsandropertinifontenuova.edu.it"));
         myWebView.setWebViewClient(new WebViewClient() {
             @SuppressWarnings("deprecation")
             @Override
