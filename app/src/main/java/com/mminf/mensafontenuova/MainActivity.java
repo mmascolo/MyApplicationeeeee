@@ -37,7 +37,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void riempidati() {
 
-
+        TextView bambino = findViewById(R.id.textView4);
+        bambino.setText("Aggiornamento dati saldo in corso");
         WebView myWebView = findViewById(R.id.WEB);
         WebSettings webSettings = myWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
@@ -75,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                                 public void onReceiveValue(String html21) {
-                    i= Integer.parseInt(html21);
+//                    i= Integer.parseInt(html21);
 
 //                           scrivi_int("bambini",Integer.parseInt(html21));
                             Log.e("Contalinee",html21);
@@ -181,16 +182,17 @@ public class MainActivity extends AppCompatActivity {
         myWebView.getSettings().setDomStorageEnabled(true);
 
 
-        if (leggi_str("connesso").equals("ok")) {
-            riempidati();
-        }
-        if (leggi_str("connesso").equals("NO")) {
+
+
             TextView bambino = findViewById(R.id.textView2);
             TextView bambino2 = findViewById(R.id.textView4);
             bambino2.setText("Per visualizzare il saldo attuale");
             bambino.setText("Impostare le credenziali nelle impostazioni");
-        }
 
+        if (leggi_str("connesso").equals("ok")) {
+            bambino.setText("");
+            riempidati();
+        }
 
         myWebView.loadUrl(leggi_sito("sito", "https://www.icsandropertinifontenuova.edu.it"));
         myWebView.setWebViewClient(new WebViewClient() {

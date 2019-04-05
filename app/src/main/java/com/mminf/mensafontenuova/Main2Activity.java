@@ -128,14 +128,14 @@ public class Main2Activity extends AppCompatActivity {
                     connessioneok = false;
                     scrivi_str("connesso", "NO");
                     TextView txtconnesso = findViewById(R.id.textView10);
-                    txtconnesso.setText("Credenziali: " + leggi_str("connesso"));
+                    txtconnesso.setText("Dati errati,verificare user/pass sul sito");
 
                 }
                 if (url.contains("PWM_ChildrenList.aspx")) {
                     connessioneok = true;
                     scrivi_str("connesso", "ok");
                     TextView txtconnesso = findViewById(R.id.textView10);
-                    txtconnesso.setText("Credenziali: " + leggi_str("connesso"));
+                    txtconnesso.setText("Credenziali corrette");
                     Log.e("html", leggi_str("connesso").toString());
 
                 }
