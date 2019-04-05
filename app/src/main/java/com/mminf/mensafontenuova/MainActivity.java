@@ -67,6 +67,22 @@ public class MainActivity extends AppCompatActivity {
                     bambino.setText("errore login");
                 }
                 if (url.contains("PWM_ChildrenList.aspx")) {
+
+                    view.evaluateJavascript("(function() { return (document.getElementById('tblChildrenList').rows.length); })();", new ValueCallback<String>() {
+
+                        @Override
+                                public void onReceiveValue(String html21) {
+
+                            Log.e("Contalinee",html21);
+
+                                }
+
+
+
+                    }
+                );
+
+
                     view.evaluateJavascript("(function() { return (document.getElementById('tblChildrenList').rows[1].cells.item(0).innerHTML); })();", new ValueCallback<String>() {
                         @Override
 //
@@ -160,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
             TextView bambino = findViewById(R.id.textView2);
             TextView bambino2 = findViewById(R.id.textView4);
 bambino2.setText("Per visualizzare il saldo attuale");
-            bambino.setText("Impostare le credenziali nei settings");
+            bambino.setText("Impostare le credenziali nelle impostazioni");
         }
 
 

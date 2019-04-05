@@ -6,9 +6,10 @@ android {
         applicationId 'com.mminf.mensafontenuova'
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 7
-        versionName '4.2b'
+        versionCode 8
+        versionName '1'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        versionNameSuffix 'release'
     }
     buildTypes {
         release {
