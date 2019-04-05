@@ -61,23 +61,34 @@ public class Main2Activity extends AppCompatActivity {
         EditText n_password = findViewById(R.id.editText2);
         RadioButton rad1 = findViewById(R.id.radioButton);
         RadioButton rad2 = findViewById(R.id.radioButton2);
-
+        RadioButton rad3 = findViewById(R.id.radioButton3);
         SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         /* WebView myWebView =  findViewById(R.id.WEB);*/
 
-        if (leggi_str("radio1") == "0") {
-            rad1.setChecked(true);
-            rad2.setChecked(false);
-        }
 
-        if (leggi_str("radio1") == "1") {
             rad1.setChecked(true);
             rad2.setChecked(false);
+            rad3.setChecked(false);
+
+
+        if (leggi_str("radio1").equals("1")) {
+            rad1.setChecked(true);
+            rad2.setChecked(false);
+            rad3.setChecked(false);
         }
-        if (leggi_str("radio1") == "2") {
+        if (leggi_str("radio1").equals("2")) {
             rad1.setChecked(false);
             rad2.setChecked(true);
+            rad3.setChecked(false);
         }
+
+        if (leggi_str("radio1").equals("3")) {
+            rad1.setChecked(false);
+            rad2.setChecked(false);
+            rad3.setChecked(true);
+        }
+
+
 
 
         username = leggi_str("username");
@@ -178,5 +189,10 @@ public class Main2Activity extends AppCompatActivity {
     }
 
 
+    public void sito3(View view) {
 
+        scrivi_str("sito", "http://www.icsdefilippo.gov.it/genitori.html");
+
+
+    }
 }
