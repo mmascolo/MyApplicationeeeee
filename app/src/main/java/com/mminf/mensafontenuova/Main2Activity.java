@@ -1,7 +1,9 @@
 package com.mminf.mensafontenuova;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -66,27 +68,27 @@ public class Main2Activity extends AppCompatActivity {
         /* WebView myWebView =  findViewById(R.id.WEB);*/
 
 
-            rad1.setChecked(true);
-            rad2.setChecked(false);
-            rad3.setChecked(false);
-
-
-        if (leggi_str("radio1").equals("1")) {
-            rad1.setChecked(true);
-            rad2.setChecked(false);
-            rad3.setChecked(false);
-        }
-        if (leggi_str("radio1").equals("2")) {
-            rad1.setChecked(false);
-            rad2.setChecked(true);
-            rad3.setChecked(false);
-        }
-
-        if (leggi_str("radio1").equals("3")) {
             rad1.setChecked(false);
             rad2.setChecked(false);
-            rad3.setChecked(true);
-        }
+            rad3.setChecked(false);
+
+//
+//        if (leggi_str("radio1").equals("1")) {
+//            rad1.setChecked(true);
+//            rad2.setChecked(false);
+//            rad3.setChecked(false);
+//        }
+//        if (leggi_str("radio1").equals("2")) {
+//            rad1.setChecked(false);
+//            rad2.setChecked(true);
+//            rad3.setChecked(false);
+//        }
+//
+//        if (leggi_str("radio1").equals("3")) {
+//            rad1.setChecked(false);
+//            rad2.setChecked(false);
+//            rad3.setChecked(true);
+//        }
 
 
 
@@ -203,5 +205,10 @@ public class Main2Activity extends AppCompatActivity {
         scrivi_str("sito", "http://www.icsdefilippo.gov.it/genitori.html");
         scrivi_str("radio1", "3");
 
+    }
+
+    public void facebookclick(View view) {
+
+         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/App-mensa-fonte-nuova-840808096267272")));
     }
 }
