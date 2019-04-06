@@ -73,7 +73,7 @@
             android:layout_width="124dp"
             android:layout_height="4dp"
             android:layout_weight="1"
-            android:checked="true"
+            android:checked="false"
             android:onClick="sito1"
             android:text="I.C.S. PERTINI" />
 

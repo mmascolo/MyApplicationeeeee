@@ -164,13 +164,16 @@ public class Main2Activity extends AppCompatActivity {
 
         if (rad1.isChecked()) {
             scrivi_str("radio1", "1");
+            scrivi_str("sito", "https://www.icsandropertinifontenuova.edu.it");
         }
 
         if (rad2.isChecked()) {
+            scrivi_str("sito", "http://www.istitutopirandello.it/public");
             scrivi_str("radio1", "2");
         }
 
         if (rad3.isChecked()) {
+            scrivi_str("sito", "http://www.icsdefilippo.gov.it/genitori.html");
             scrivi_str("radio1", "3");
         }
 
@@ -184,20 +187,21 @@ public class Main2Activity extends AppCompatActivity {
 
     public void sito1(View view) {
         scrivi_str("sito", "https://www.icsandropertinifontenuova.edu.it");
+        scrivi_str("radio1", "1");
     }
 
 
     public void sito2(View view) {
 
-        scrivi_str("sito", "http://www.istitutopirandello.it/public/");
-
+        scrivi_str("sito", "http://www.istitutopirandello.it/public");
+        scrivi_str("radio1", "2");
     }
 
 
     public void sito3(View view) {
 
         scrivi_str("sito", "http://www.icsdefilippo.gov.it/genitori.html");
-
+        scrivi_str("radio1", "3");
 
     }
 }

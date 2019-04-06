@@ -29,7 +29,7 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
 
     private ViewPager mViewPager;
-    private ViewPager mViewPager2;
+
 
 
     public void scrivi_str(String campo, String valore) {
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                     });
                 }
 
-                int conta;
+
                 if (url.contains("login")) {
                     TextView bambino = findViewById(R.id.textView2);
                     bambino.setText("errore login");
@@ -75,88 +75,425 @@ public class MainActivity extends AppCompatActivity {
                 if (url.contains("PWM_ChildrenList.aspx")) {
 
 
-
                     view.evaluateJavascript("(function() { return (document.getElementById('tblChildrenList').rows.length); })();", new ValueCallback<String>() {
 
-                        @Override
+                                @Override
                                 public void onReceiveValue(String html21) {
 //                    i= Integer.parseInt(html21);
 
-                            scrivi_int("bambini",Integer.parseInt(html21));
-                            Log.e("Contalinee",html21);
+                                    scrivi_int("bambini", Integer.parseInt(html21));
+                                    Log.e("Contalinee", html21);
 
                                 }
+                            }
+                    );
+
+                    int contarow = leggi_int("bambini");
+
+                    Log.e("contatore", Integer.toString(leggi_int("bambini")));
+
+
+
+
+
+
+
+                    if (contarow==2) {
+                        //                    CARICA NOME BAMBINO
+                        view.evaluateJavascript("(function() { return (document.getElementById('tblChildrenList').rows[1].cells.item(0).innerHTML); })();", new ValueCallback<String>() {
+                            @Override
+
+
+                            public void onReceiveValue(String html1) {
+                                String input = html1;
+                                Log.e("bambino", html1);
+                                input = input.substring(html1.indexOf(">") + 1, html1.lastIndexOf("\\"));
+                                input = "Bambino: " + input;
+                                Log.e("bambino", input);
+                                TextView bambino = findViewById(R.id.textView4);
+                                bambino.setText(input);
+
+                            }
+                        });
+
+//                        CARICA SALDO
+                        view.evaluateJavascript(
+                                "(function() { return (document.getElementById('tblChildrenList').rows[1].cells.item(1).innerHTML); })();", new ValueCallback<String>() {
+                                    @Override
+                                    public void onReceiveValue(String html2) {
+                                        String input2 = html2;
+
+                                        input2 = input2.substring(html2.indexOf(">") + 1, html2.lastIndexOf("\\"));
+                                        input2 = "Saldo: " + input2;
+                                        TextView saldo  = findViewById(R.id.textView2);
+                                        saldo.setText(input2);
+                                    }
+                                });
+
+
                     }
-                );
 
-int contarow = leggi_int("bambini");
-                    contarow = contarow-1;
-                  Log.e("contatore",Integer.toString(leggi_int("bambini")));
+// ************************************************************************* DUE BAMBINI ********************************************************
+//                    ****************************************************************************************************************
 
 
+                    if (contarow==3) {
 
-                  for (int i=1; i<=contarow; i++)
-                  {
-
-                    view.evaluateJavascript("(function() { return (document.getElementById('tblChildrenList').rows[" +contarow + "].cells.item(0).innerHTML); })();", new ValueCallback<String>() {
-                        @Override
-
-
-                        public void onReceiveValue(String html1) {
-                            String input = html1;
-                            input = input.substring(html1.indexOf(">") + 1, html1.lastIndexOf("\\"));
-                            input = "Bambino: " + input;
-                            scrivi_str("bambinoappo",input);
+                        //                    CARICA NOME BAMBINO
+                        view.evaluateJavascript("(function() { return (document.getElementById('tblChildrenList').rows[1].cells.item(0).innerHTML); })();", new ValueCallback<String>() {
+                            @Override
 
 
+                            public void onReceiveValue(String html1) {
+                                String input = html1;
+                                Log.e("bambino1", html1);
+                                input = input.substring(html1.indexOf(">") + 1, html1.lastIndexOf("\\"));
+                                input = "Bambino: " + input;
+                                Log.e("bambino", input);
+                                TextView bambino = findViewById(R.id.textView4);
+                                bambino.setText(input);
 
-                        }
-                    });
-                    //********************************************************************************
-                    //*******************************************saldo****************************
-                    view.evaluateJavascript(
-                            "(function() { return (document.getElementById('tblChildrenList').rows[" + contarow+ "].cells.item(1).innerHTML); })();", new ValueCallback<String>() {
-                                @Override
-                                public void onReceiveValue(String html1) {
-                                     String input = html1;
+                            }
+                        });
 
-                                    input = input.substring(html1.indexOf(">") + 1, html1.lastIndexOf("\\"));
-                                    input = "Saldo: " + input;
-                                    scrivi_str("saldoappo",input);
+//                        CARICA SALDO
+                        view.evaluateJavascript(
+                                "(function() { return (document.getElementById('tblChildrenList').rows[1].cells.item(1).innerHTML); })();", new ValueCallback<String>() {
+                                    @Override
+                                    public void onReceiveValue(String html2) {
+                                        String input2 = html2;
 
-                                }
-                            });
+                                        input2 = input2.substring(html2.indexOf(">") + 1, html2.lastIndexOf("\\"));
+                                        input2 = "Saldo: " + input2;
+                                        scrivi_str("saldoappo1", input2);
+
+                                        TextView saldo  = findViewById(R.id.textView2);
+                                        saldo.setText(input2);
+                                    }
+                                });
 
 
-                      if (i==1){
-                          Log.e("if","1");
-                          TextView bambino = findViewById(R.id.textView4);
-                          bambino.setText(leggi_str("bambinoappo"));
-                          TextView saldo = findViewById(R.id.textView2);
-                          saldo.setText(leggi_str("saldoappo"));
 
-                      }
-                      if (i==2){
-                          Log.e("if","2");
-                          TextView bambino = findViewById(R.id.textView6);
-                          bambino.setText(leggi_str("bambinoappo"));
-                          TextView saldo = findViewById(R.id.textView2);
-                          saldo.setText(leggi_str("saldoappo"));
-                      }
-                      if (i==3){
-                          TextView bambino = findViewById(R.id.textView8);
-                          bambino.setText(leggi_str("bambinoappo"));
-                          TextView saldo = findViewById(R.id.textView2);
-                          saldo.setText(leggi_str("saldoappo"));
-                      }
-                      if (i==4){
-                          TextView bambino = findViewById(R.id.textView11);
-                          bambino.setText(leggi_str("bambinoappo"));
-                          TextView saldo = findViewById(R.id.textView2);
-                          saldo.setText(leggi_str("saldoappo"));
-                      }
 
-                }}}
+
+
+//                       CARICA NOME BAMBINO
+                        view.evaluateJavascript("(function() { return (document.getElementById('tblChildrenList').rows[2].cells.item(0).innerHTML); })();", new ValueCallback<String>() {
+                            @Override
+
+
+                            public void onReceiveValue(String html1) {
+                                String input = html1;
+                                Log.e("bambino", html1);
+                                input = input.substring(html1.indexOf(">") + 1, html1.lastIndexOf("\\"));
+                                input = "Bambino: " + input;
+                                scrivi_str("bambinoappo2", input);
+                                Log.e("bambino", input);
+                                TextView bambino2 = findViewById(R.id.textView6);
+                                bambino2.setText(input);
+                            }
+                        });
+
+//                        CARICA SALDO
+                        view.evaluateJavascript(
+                                "(function() { return (document.getElementById('tblChildrenList').rows[2].cells.item(1).innerHTML); })();", new ValueCallback<String>() {
+                                    @Override
+                                    public void onReceiveValue(String html2) {
+                                        String input2 = html2;
+
+                                        input2 = input2.substring(html2.indexOf(">") + 1, html2.lastIndexOf("\\"));
+                                        input2 = "Saldo: " + input2;
+                                        scrivi_str("saldoappo2", input2);
+                                        TextView saldo2 = findViewById(R.id.textView7);
+                                        saldo2.setText( input2);
+                                    }
+                                });
+
+
+                    }
+// *********************************************************************************************************************
+//                    *****************************************************************************************************
+
+
+                    // ************************************************************************* tre BAMBINI ********************************************************
+//                    ****************************************************************************************************************
+
+
+                    if (contarow==4) {
+
+                        //                    CARICA NOME BAMBINO
+                        view.evaluateJavascript("(function() { return (document.getElementById('tblChildrenList').rows[1].cells.item(0).innerHTML); })();", new ValueCallback<String>() {
+                            @Override
+
+
+                            public void onReceiveValue(String html1) {
+                                String input = html1;
+                                Log.e("bambino1", html1);
+                                input = input.substring(html1.indexOf(">") + 1, html1.lastIndexOf("\\"));
+                                input = "Bambino: " + input;
+                                Log.e("bambino", input);
+                                TextView bambino = findViewById(R.id.textView4);
+                                bambino.setText(input);
+
+                            }
+                        });
+
+//                        CARICA SALDO
+                        view.evaluateJavascript(
+                                "(function() { return (document.getElementById('tblChildrenList').rows[1].cells.item(1).innerHTML); })();", new ValueCallback<String>() {
+                                    @Override
+                                    public void onReceiveValue(String html2) {
+                                        String input2 = html2;
+
+                                        input2 = input2.substring(html2.indexOf(">") + 1, html2.lastIndexOf("\\"));
+                                        input2 = "Saldo: " + input2;
+                                        scrivi_str("saldoappo1", input2);
+
+                                        TextView saldo  = findViewById(R.id.textView2);
+                                        saldo.setText(input2);
+                                    }
+                                });
+
+
+
+
+
+
+//                       CARICA NOME BAMBINO
+                        view.evaluateJavascript("(function() { return (document.getElementById('tblChildrenList').rows[2].cells.item(0).innerHTML); })();", new ValueCallback<String>() {
+                            @Override
+
+
+                            public void onReceiveValue(String html1) {
+                                String input = html1;
+                                Log.e("bambino", html1);
+                                input = input.substring(html1.indexOf(">") + 1, html1.lastIndexOf("\\"));
+                                input = "Bambino: " + input;
+                                scrivi_str("bambinoappo2", input);
+                                Log.e("bambino", input);
+                                TextView bambino2 = findViewById(R.id.textView6);
+                                bambino2.setText(input);
+                            }
+                        });
+
+//                        CARICA SALDO
+                        view.evaluateJavascript(
+                                "(function() { return (document.getElementById('tblChildrenList').rows[2].cells.item(1).innerHTML); })();", new ValueCallback<String>() {
+                                    @Override
+                                    public void onReceiveValue(String html2) {
+                                        String input2 = html2;
+
+                                        input2 = input2.substring(html2.indexOf(">") + 1, html2.lastIndexOf("\\"));
+                                        input2 = "Saldo: " + input2;
+                                        scrivi_str("saldoappo2", input2);
+                                        TextView saldo2 = findViewById(R.id.textView7);
+                                        saldo2.setText( input2);
+                                    }
+                                });
+
+                        view.evaluateJavascript("(function() { return (document.getElementById('tblChildrenList').rows[3].cells.item(0).innerHTML); })();", new ValueCallback<String>() {
+                            @Override
+
+
+                            public void onReceiveValue(String html1) {
+                                String input = html1;
+                                Log.e("bambino", html1);
+                                input = input.substring(html1.indexOf(">") + 1, html1.lastIndexOf("\\"));
+                                input = "Bambino: " + input;
+                                scrivi_str("bambinoappo2", input);
+                                Log.e("bambino", input);
+                                TextView bambino2 = findViewById(R.id.textView8);
+                                bambino2.setText(input);
+                            }
+                        });
+
+//                        CARICA SALDO
+                        view.evaluateJavascript(
+                                "(function() { return (document.getElementById('tblChildrenList').rows[3].cells.item(1).innerHTML); })();", new ValueCallback<String>() {
+                                    @Override
+                                    public void onReceiveValue(String html2) {
+                                        String input2 = html2;
+
+                                        input2 = input2.substring(html2.indexOf(">") + 1, html2.lastIndexOf("\\"));
+                                        input2 = "Saldo: " + input2;
+                                        scrivi_str("saldoappo2", input2);
+                                        TextView saldo2 = findViewById(R.id.textView9);
+                                        saldo2.setText( input2);
+                                    }
+                                });
+                    }
+// *********************************************************************************************************************
+//                    *****************************************************************************************************
+
+                    // ************************************************************************* quattro BAMBINI ********************************************************
+//                    ****************************************************************************************************************
+
+
+                    if (contarow==5) {
+
+                        //                    CARICA NOME BAMBINO
+                        view.evaluateJavascript("(function() { return (document.getElementById('tblChildrenList').rows[1].cells.item(0).innerHTML); })();", new ValueCallback<String>() {
+                            @Override
+
+
+                            public void onReceiveValue(String html1) {
+                                String input = html1;
+                                Log.e("bambino1", html1);
+                                input = input.substring(html1.indexOf(">") + 1, html1.lastIndexOf("\\"));
+                                input = "Bambino: " + input;
+                                Log.e("bambino", input);
+                                TextView bambino = findViewById(R.id.textView4);
+                                bambino.setText(input);
+
+                            }
+                        });
+
+//                        CARICA SALDO
+                        view.evaluateJavascript(
+                                "(function() { return (document.getElementById('tblChildrenList').rows[1].cells.item(1).innerHTML); })();", new ValueCallback<String>() {
+                                    @Override
+                                    public void onReceiveValue(String html2) {
+                                        String input2 = html2;
+
+                                        input2 = input2.substring(html2.indexOf(">") + 1, html2.lastIndexOf("\\"));
+                                        input2 = "Saldo: " + input2;
+                                        scrivi_str("saldoappo1", input2);
+
+                                        TextView saldo  = findViewById(R.id.textView2);
+                                        saldo.setText(input2);
+                                    }
+                                });
+
+
+
+
+
+
+//                       CARICA NOME BAMBINO
+                        view.evaluateJavascript("(function() { return (document.getElementById('tblChildrenList').rows[2].cells.item(0).innerHTML); })();", new ValueCallback<String>() {
+                            @Override
+
+
+                            public void onReceiveValue(String html1) {
+                                String input = html1;
+                                Log.e("bambino", html1);
+                                input = input.substring(html1.indexOf(">") + 1, html1.lastIndexOf("\\"));
+                                input = "Bambino: " + input;
+                                scrivi_str("bambinoappo2", input);
+                                Log.e("bambino", input);
+                                TextView bambino2 = findViewById(R.id.textView6);
+                                bambino2.setText(input);
+                            }
+                        });
+
+//                        CARICA SALDO
+                        view.evaluateJavascript(
+                                "(function() { return (document.getElementById('tblChildrenList').rows[2].cells.item(1).innerHTML); })();", new ValueCallback<String>() {
+                                    @Override
+                                    public void onReceiveValue(String html2) {
+                                        String input2 = html2;
+
+                                        input2 = input2.substring(html2.indexOf(">") + 1, html2.lastIndexOf("\\"));
+                                        input2 = "Saldo: " + input2;
+                                        scrivi_str("saldoappo2", input2);
+                                        TextView saldo2 = findViewById(R.id.textView7);
+                                        saldo2.setText( input2);
+                                    }
+                                });
+
+                        view.evaluateJavascript("(function() { return (document.getElementById('tblChildrenList').rows[3].cells.item(0).innerHTML); })();", new ValueCallback<String>() {
+                            @Override
+
+
+                            public void onReceiveValue(String html1) {
+                                String input = html1;
+                                Log.e("bambino", html1);
+                                input = input.substring(html1.indexOf(">") + 1, html1.lastIndexOf("\\"));
+                                input = "Bambino: " + input;
+                                scrivi_str("bambinoappo2", input);
+                                Log.e("bambino", input);
+                                TextView bambino2 = findViewById(R.id.textView8);
+                                bambino2.setText(input);
+                            }
+                        });
+
+//                        CARICA SALDO
+                        view.evaluateJavascript(
+                                "(function() { return (document.getElementById('tblChildrenList').rows[3].cells.item(1).innerHTML); })();", new ValueCallback<String>() {
+                                    @Override
+                                    public void onReceiveValue(String html2) {
+                                        String input2 = html2;
+
+                                        input2 = input2.substring(html2.indexOf(">") + 1, html2.lastIndexOf("\\"));
+                                        input2 = "Saldo: " + input2;
+                                        scrivi_str("saldoappo2", input2);
+                                        TextView saldo2 = findViewById(R.id.textView9);
+                                        saldo2.setText( input2);
+                                    }
+                                });
+
+
+
+                        view.evaluateJavascript("(function() { return (document.getElementById('tblChildrenList').rows[4].cells.item(0).innerHTML); })();", new ValueCallback<String>() {
+                            @Override
+
+
+                            public void onReceiveValue(String html1) {
+                                String input = html1;
+                                Log.e("bambino", html1);
+                                input = input.substring(html1.indexOf(">") + 1, html1.lastIndexOf("\\"));
+                                input = "Bambino: " + input;
+                                scrivi_str("bambinoappo2", input);
+                                Log.e("bambino", input);
+                                TextView bambino2 = findViewById(R.id.textView11);
+                                bambino2.setText(input);
+                            }
+                        });
+
+//                        CARICA SALDO
+                        view.evaluateJavascript(
+                                "(function() { return (document.getElementById('tblChildrenList').rows[4].cells.item(1).innerHTML); })();", new ValueCallback<String>() {
+                                    @Override
+                                    public void onReceiveValue(String html2) {
+                                        String input2 = html2;
+
+                                        input2 = input2.substring(html2.indexOf(">") + 1, html2.lastIndexOf("\\"));
+                                        input2 = "Saldo: " + input2;
+                                        scrivi_str("saldoappo2", input2);
+                                        TextView saldo2 = findViewById(R.id.textView12);
+                                        saldo2.setText( input2);
+                                    }
+                                });
+
+
+
+
+
+                    }
+// *********************************************************************************************************************
+//                    *****************************************************************************************************
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                }}
 
 
 
