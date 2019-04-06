@@ -38,6 +38,7 @@
                         android:layout_height="19dp"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="7dp"
+                        android:textAlignment="viewStart"
                         android:textColor="@android:color/black"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
@@ -49,7 +50,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="19dp"
                         android:layout_marginStart="16dp"
-                        android:textAlignment="center"
+                        android:textAlignment="viewStart"
                         android:textColor="#000000"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
@@ -62,6 +63,8 @@
                         android:layout_height="19dp"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="17dp"
+                        android:textAlignment="viewStart"
+                        android:textStyle="bold"
                         android:visibility="visible"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView2" />
@@ -71,6 +74,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="19dp"
                         android:layout_marginStart="16dp"
+                        android:textAlignment="viewStart"
+                        android:textStyle="bold"
                         android:visibility="visible"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView6" />
@@ -81,6 +86,8 @@
                         android:layout_height="19dp"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="17dp"
+                        android:textAlignment="viewStart"
+                        android:textStyle="bold"
                         android:visibility="visible"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView7" />
@@ -90,6 +97,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="19dp"
                         android:layout_marginStart="16dp"
+                        android:textAlignment="viewStart"
+                        android:textStyle="bold"
                         android:visibility="visible"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView8" />
@@ -99,6 +108,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="19dp"
                         android:layout_marginTop="17dp"
+                        android:textAlignment="viewStart"
+                        android:textStyle="bold"
                         android:visibility="visible"
                         app:layout_constraintStart_toStartOf="@+id/textView9"
                         app:layout_constraintTop_toBottomOf="@+id/textView9" />
@@ -107,6 +118,8 @@
                         android:id="@+id/textView12"
                         android:layout_width="wrap_content"
                         android:layout_height="19dp"
+                        android:textAlignment="viewStart"
+                        android:textStyle="bold"
                         android:visibility="visible"
                         app:layout_constraintStart_toStartOf="@+id/textView11"
                         app:layout_constraintTop_toBottomOf="@+id/textView11" />
