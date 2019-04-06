@@ -29,6 +29,8 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
 
     private ViewPager mViewPager;
+    private ViewPager mViewPager2;
+
 
     public void scrivi_str(String campo, String valore) {
         SharedPreferences mPreferences_agg = PreferenceManager.getDefaultSharedPreferences(this);
@@ -36,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void riempidati() {
+
+
 
         TextView bambino = findViewById(R.id.textView4);
         bambino.setText("Aggiornamento dati saldo in corso");
@@ -69,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
                     bambino.setText("errore login");
                 }
                 if (url.contains("PWM_ChildrenList.aspx")) {
-                    int i = 1;
+
 
 
                     view.evaluateJavascript("(function() { return (document.getElementById('tblChildrenList').rows.length); })();", new ValueCallback<String>() {
@@ -78,65 +82,84 @@ public class MainActivity extends AppCompatActivity {
                                 public void onReceiveValue(String html21) {
 //                    i= Integer.parseInt(html21);
 
-//                           scrivi_int("bambini",Integer.parseInt(html21));
+                            scrivi_int("bambini",Integer.parseInt(html21));
                             Log.e("Contalinee",html21);
 
                                 }
                     }
                 );
 
-
-//                    Log.e("i",getString(contalinee));
-//                    for(int i=1; i<contalinee; i++) {
-//                        Log.e("i",getString(i));
-
-
-                        view.evaluateJavascript("(function() { return (document.getElementById('tblChildrenList').rows["+i+"].cells.item(0).innerHTML); })();", new ValueCallback<String>() {
-                            @Override
-//
-                            public void onReceiveValue(String html1) {
-                                String input = html1;
-                                String input2 = html1;
-                                Log.e("dove", "demtro onreceive");
-                                TextView saldo = findViewById(R.id.textView2);
-                                Log.e("dove", "dopo saldo");
-
-                                input = input.substring(html1.indexOf(">") + 1, html1.lastIndexOf("\\"));
-                                Log.e("dove", "dopo sub");
-                                input = "Bambino: " + input;
-                                TextView bambino = findViewById(R.id.textView4);
-                                bambino.setText(input);
-                                //                           	saldo.setText(input2.toString());
-                                Log.e("input", input);
-                                Log.e("input2", input2);
-                            }
-                        });
-                        //********************************************************************************
-                        //*******************************************saldo****************************
-                        view.evaluateJavascript(
-                                "(function() { return (document.getElementById('tblChildrenList').rows["+i+"].cells.item(1).innerHTML); })();", new ValueCallback<String>() {
-                                    @Override
-                                    public void onReceiveValue(String html1) {
-                                        Log.e("html0", html1);
-                                        String input = html1;
-                                        String input2 = html1;
-                                        TextView saldo = findViewById(R.id.textView2);
-                                        input = input.substring(html1.indexOf(">") + 1, html1.lastIndexOf("\\"));
-                                        input = "Saldo: " + input;
-                                        TextView bambino = findViewById(R.id.textView4);
-                                        saldo.setText(input);
-                                        Log.e("input", input);
-                                        Log.e("input2", input2);
-                                    }
-                                });
+int contarow = leggi_int("bambini");
+                    contarow = contarow-1;
+                  Log.e("contatore",Integer.toString(leggi_int("bambini")));
 
 
 
+                  for (int i=1; i<=contarow; i++)
+                  {
 
-                    }
+                    view.evaluateJavascript("(function() { return (document.getElementById('tblChildrenList').rows[" +contarow + "].cells.item(0).innerHTML); })();", new ValueCallback<String>() {
+                        @Override
 
 
-                }
+                        public void onReceiveValue(String html1) {
+                            String input = html1;
+                            input = input.substring(html1.indexOf(">") + 1, html1.lastIndexOf("\\"));
+                            input = "Bambino: " + input;
+                            scrivi_str("bambinoappo",input);
+
+
+
+                        }
+                    });
+                    //********************************************************************************
+                    //*******************************************saldo****************************
+                    view.evaluateJavascript(
+                            "(function() { return (document.getElementById('tblChildrenList').rows[" + contarow+ "].cells.item(1).innerHTML); })();", new ValueCallback<String>() {
+                                @Override
+                                public void onReceiveValue(String html1) {
+                                     String input = html1;
+
+                                    input = input.substring(html1.indexOf(">") + 1, html1.lastIndexOf("\\"));
+                                    input = "Saldo: " + input;
+                                    scrivi_str("saldoappo",input);
+
+                                }
+                            });
+
+
+                      if (i==1){
+                          Log.e("if","1");
+                          TextView bambino = findViewById(R.id.textView4);
+                          bambino.setText(leggi_str("bambinoappo"));
+                          TextView saldo = findViewById(R.id.textView2);
+                          saldo.setText(leggi_str("saldoappo"));
+
+                      }
+                      if (i==2){
+                          Log.e("if","2");
+                          TextView bambino = findViewById(R.id.textView6);
+                          bambino.setText(leggi_str("bambinoappo"));
+                          TextView saldo = findViewById(R.id.textView2);
+                          saldo.setText(leggi_str("saldoappo"));
+                      }
+                      if (i==3){
+                          TextView bambino = findViewById(R.id.textView8);
+                          bambino.setText(leggi_str("bambinoappo"));
+                          TextView saldo = findViewById(R.id.textView2);
+                          saldo.setText(leggi_str("saldoappo"));
+                      }
+                      if (i==4){
+                          TextView bambino = findViewById(R.id.textView11);
+                          bambino.setText(leggi_str("bambinoappo"));
+                          TextView saldo = findViewById(R.id.textView2);
+                          saldo.setText(leggi_str("saldoappo"));
+                      }
+
+                }}}
+
+
+
 //
 //            }
 
@@ -145,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    void scrivi_int(String campo, int valore) {
+    public void scrivi_int(String campo, int valore) {
         SharedPreferences mPreferences3 = PreferenceManager.getDefaultSharedPreferences(this);
         mPreferences3.edit().putInt(campo, valore).commit();
     }
@@ -174,6 +197,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
+
 
         WebView myWebView =  findViewById(R.id.SCUOLA);
         myWebView.setInitialScale(80);
@@ -209,12 +236,13 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
+
+
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-
 
         Date d = new Date();
         String date = new SimpleDateFormat("dd", Locale.getDefault()).format(new Date());
