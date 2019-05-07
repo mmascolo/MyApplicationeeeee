@@ -156,28 +156,28 @@ public class Main2Activity extends AppCompatActivity {
         EditText n_password = findViewById(R.id.editText2);
         TextView txtconnesso = findViewById(R.id.textView10);
         txtconnesso.setText("Credenziali: " + leggi_str("connesso"));
-        RadioButton rad1 = findViewById(R.id.radioButton);
-        RadioButton rad2 = findViewById(R.id.radioButton2);
-        RadioButton rad3 = findViewById(R.id.radioButton3);
+//        RadioButton rad1 = findViewById(R.id.radioButton2);
+//        RadioButton rad2 = findViewById(R.id.radioButton);
+//        RadioButton rad3 = findViewById(R.id.radioButton3);
         SharedPreferences.Editor preferencesEditor = mPreferences.edit();
         scrivi_str("username", n_user.getText().toString());
         scrivi_str("password", n_password.getText().toString());
         scrivi_str("utenza", "SI");
 
-        if (rad1.isChecked()) {
-            scrivi_str("radio1", "1");
-            scrivi_str("sito", "https://www.icsandropertinifontenuova.edu.it");
-        }
-
-        if (rad2.isChecked()) {
-            scrivi_str("sito", "http://www.istitutopirandello.it/public");
-            scrivi_str("radio1", "2");
-        }
-
-        if (rad3.isChecked()) {
-            scrivi_str("sito", "http://www.icsdefilippo.gov.it/genitori.html");
-            scrivi_str("radio1", "3");
-        }
+//        if (rad1.isChecked()) {
+//            scrivi_str("radio1", "1");
+//            scrivi_str("sito", "https://www.icsandropertinifontenuova.edu.it");
+//        }
+//
+//        if (rad2.isChecked()) {
+//            scrivi_str("sito", "http://www.istitutopirandello.it/public");
+//            scrivi_str("radio1", "2");
+//        }
+//
+//        if (rad3.isChecked()) {
+//            scrivi_str("sito", "http://www.icsdefilippo.gov.it/genitori.html");
+//            scrivi_str("radio1", "3");
+//        }
 
    connesso(n_user.getText().toString(), n_password.getText().toString());
         Log.e("prima", leggi_str("connesso"));
